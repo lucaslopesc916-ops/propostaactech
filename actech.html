@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proposta — Desenvolvimento I.A. | ACTECH</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #000000;
+      --white: #ffffff;
+      --gray-50: #fafafa;
+      --gray-100: #f5f5f5;
+      --gray-200: #e5e5e5;
+      --gray-300: #d4d4d4;
+      --gray-400: #a3a3a3;
+      --gray-500: #737373;
+      --gray-600: #525252;
+      --gray-700: #404040;
+      --gray-800: #262626;
+      --gray-900: #171717;
+      --gray-950: #0a0a0a;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--black);
+      color: var(--white);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    ::selection { background: var(--white); color: var(--black); }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.25rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      background: rgba(0,0,0,0.7);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      transition: all 0.4s ease;
+    }
+
+    nav.scrolled { padding: 0.85rem 3rem; }
+
+    .nav-logo {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: -0.03em;
+    }
+
+    .nav-logo span { color: var(--gray-500); font-weight: 300; }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--gray-400);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--white); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 8rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -40%; left: 50%;
+      transform: translateX(-50%);
+      width: 800px; height: 800px;
+      background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 1.2rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 100px;
+      font-size: 0.75rem;
+      color: var(--gray-400);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 1s 0.2s forwards;
+    }
+
+    .hero-badge .dot {
+      width: 6px; height: 6px;
+      background: var(--white);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    .hero h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(3.2rem, 8vw, 7.5rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 0.95;
+      max-width: 900px;
+      opacity: 0;
+      animation: fadeUp 1s 0.4s forwards;
+    }
+
+    .hero h1 .thin { font-weight: 200; color: var(--gray-500); }
+
+    .hero-sub {
+      margin-top: 2rem;
+      font-size: 1.15rem;
+      color: var(--gray-400);
+      max-width: 520px;
+      line-height: 1.7;
+      font-weight: 300;
+      opacity: 0;
+      animation: fadeUp 1s 0.6s forwards;
+    }
+
+    .hero-sub strong { color: var(--white); font-weight: 500; }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2.5rem; left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      opacity: 0;
+      animation: fadeUp 1s 1s forwards;
+    }
+
+    .scroll-line {
+      width: 1px; height: 40px;
+      background: linear-gradient(to bottom, var(--gray-500), transparent);
+      animation: scrollPulse 2s infinite;
+    }
+
+    /* ── SECTION COMMON ── */
+    section {
+      padding: 8rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray-500);
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+    }
+
+    .section-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 1.1;
+      max-width: 700px;
+    }
+
+    .section-title .muted { color: var(--gray-600); }
+
+    /* ── PROBLEM ── */
+    .problem {
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      margin-top: 4rem;
+      align-items: start;
+    }
+
+    .problem-text {
+      font-size: 1.15rem;
+      color: var(--gray-400);
+      line-height: 1.8;
+      font-weight: 300;
+    }
+
+    .problem-text strong { color: var(--white); font-weight: 500; }
+
+    .problem-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .stat {
+      padding: 2rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      transition: all 0.4s;
+    }
+
+    .stat:hover {
+      border-color: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.02);
+    }
+
+    .stat-number {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.8rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    .stat-label {
+      margin-top: 0.75rem;
+      font-size: 0.82rem;
+      color: var(--gray-500);
+      line-height: 1.5;
+    }
+
+    /* ── DELIVERABLES ── */
+    .deliverables {
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .deliverables-list {
+      margin-top: 4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .deliverable-row {
+      display: grid;
+      grid-template-columns: 60px 1fr;
+      gap: 2.5rem;
+      padding: 2.5rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      align-items: start;
+      transition: all 0.4s;
+    }
+
+    .deliverable-row:first-child {
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .deliverable-row:hover {
+      padding-left: 1rem;
+    }
+
+    .deliverable-number {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 200;
+      color: var(--gray-600);
+      line-height: 1;
+    }
+
+    .deliverable-info h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+
+    .deliverable-info p {
+      font-size: 0.9rem;
+      color: var(--gray-400);
+      line-height: 1.7;
+      font-weight: 300;
+      max-width: 550px;
+    }
+
+    /* ── ROADMAP ── */
+    .roadmap {
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .roadmap-container {
+      margin-top: 4rem;
+      position: relative;
+    }
+
+    .roadmap-line {
+      position: absolute;
+      left: 28px;
+      top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.15), rgba(255,255,255,0.03));
+    }
+
+    .roadmap-item {
+      display: flex;
+      gap: 3rem;
+      padding: 2.5rem 0;
+      position: relative;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .roadmap-item.visible { opacity: 1; transform: translateY(0); }
+
+    .roadmap-marker {
+      flex-shrink: 0;
+      width: 56px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .roadmap-dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--white);
+      position: relative;
+      z-index: 2;
+      transition: all 0.3s;
+    }
+
+    .roadmap-item:hover .roadmap-dot {
+      box-shadow: 0 0 20px rgba(255,255,255,0.4);
+      transform: scale(1.3);
+    }
+
+    .roadmap-month {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray-500);
+      white-space: nowrap;
+    }
+
+    .roadmap-content {
+      flex: 1;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .roadmap-item:last-child .roadmap-content { border-bottom: none; }
+
+    .roadmap-phase {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray-500);
+      margin-bottom: 0.5rem;
+    }
+
+    .roadmap-content h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.75rem;
+    }
+
+    .roadmap-content p {
+      font-size: 0.92rem;
+      color: var(--gray-400);
+      line-height: 1.7;
+      font-weight: 300;
+      max-width: 500px;
+    }
+
+    .roadmap-tags {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .roadmap-tag {
+      padding: 0.3rem 0.85rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 100px;
+      font-size: 0.72rem;
+      color: var(--gray-400);
+      letter-spacing: 0.02em;
+    }
+
+    /* ── PRICING ── */
+    .pricing {
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .pricing-anchor {
+      margin-top: 4rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .anchor-card {
+      padding: 2.5rem 2rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      text-align: center;
+      position: relative;
+      transition: all 0.4s;
+    }
+
+    .anchor-card.comparison { opacity: 0.5; }
+
+    .anchor-card.comparison .anchor-price {
+      text-decoration: line-through;
+      text-decoration-color: var(--gray-600);
+    }
+
+    .anchor-card.featured {
+      border-color: var(--white);
+      background: rgba(255,255,255,0.03);
+    }
+
+    .anchor-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray-500);
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+    }
+
+    .anchor-price {
+      font-family: 'Outfit', sans-serif;
+      font-size: 3rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    .anchor-price .currency {
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--gray-500);
+      vertical-align: top;
+      margin-right: 0.1em;
+    }
+
+    .anchor-period {
+      font-size: 0.85rem;
+      color: var(--gray-500);
+      margin-top: 0.5rem;
+    }
+
+    .anchor-desc {
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+      color: var(--gray-500);
+      line-height: 1.6;
+    }
+
+    .featured-badge {
+      position: absolute;
+      top: -12px; left: 50%;
+      transform: translateX(-50%);
+      background: var(--white);
+      color: var(--black);
+      padding: 0.3rem 1.2rem;
+      border-radius: 100px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    /* ── CALCULATOR ── */
+    .calculator {
+      margin-top: 5rem;
+      padding: 3.5rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      background: rgba(255,255,255,0.015);
+    }
+
+    .calc-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .calc-header h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .calc-header p {
+      color: var(--gray-500);
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+
+    .calc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1px 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .calc-divider {
+      background: rgba(255,255,255,0.08);
+      height: 100%;
+    }
+
+    .calc-inputs label {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--gray-500);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .calc-inputs input {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 0.9rem 1.2rem;
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .calc-inputs input:focus {
+      border-color: rgba(255,255,255,0.3);
+    }
+
+    .calc-result {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 100%;
+    }
+
+    .calc-result-item {
+      padding: 1.5rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .calc-result-item:last-child { border-bottom: none; }
+
+    .calc-result-label {
+      font-size: 0.78rem;
+      color: var(--gray-500);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .calc-result-value {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-top: 0.25rem;
+    }
+
+    .calc-result-value.highlight { color: #22c55e; }
+
+    .calc-result-note {
+      font-size: 0.8rem;
+      color: var(--gray-500);
+      margin-top: 0.25rem;
+    }
+
+    /* ── INVESTMENT SUMMARY ── */
+    .investment {
+      margin-top: 5rem;
+      text-align: center;
+    }
+
+    .investment-total {
+      margin-top: 3rem;
+      padding: 4rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 28px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .investment-total::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    }
+
+    .investment-breakdown {
+      display: flex;
+      justify-content: center;
+      gap: 4rem;
+    }
+
+    .investment-item { text-align: center; }
+
+    .investment-item .label {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray-500);
+      font-weight: 500;
+    }
+
+    .investment-item .value {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.8rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-top: 0.3rem;
+    }
+
+    .investment-item .value .small {
+      font-size: 1rem;
+      color: var(--gray-500);
+      font-weight: 400;
+    }
+
+    .investment-divider {
+      width: 1px;
+      background: rgba(255,255,255,0.1);
+    }
+
+    /* ── ABOUT ── */
+    .about {
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      margin-top: 4rem;
+      align-items: center;
+    }
+
+    .about-text {
+      font-size: 1.1rem;
+      color: var(--gray-400);
+      line-height: 1.8;
+      font-weight: 300;
+    }
+
+    .about-text strong { color: var(--white); font-weight: 500; }
+
+    .about-highlights {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .about-highlight {
+      padding: 1.5rem 2rem;
+      border-left: 2px solid rgba(255,255,255,0.15);
+      transition: all 0.3s;
+    }
+
+    .about-highlight:hover {
+      border-left-color: var(--white);
+      padding-left: 2.5rem;
+    }
+
+    .about-highlight h4 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      letter-spacing: -0.01em;
+    }
+
+    .about-highlight p {
+      font-size: 0.85rem;
+      color: var(--gray-500);
+      line-height: 1.6;
+    }
+
+    /* ── FINAL CTA ── */
+    .final-cta {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      text-align: center;
+      padding: 10rem 2rem;
+    }
+
+    .final-cta h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+    }
+
+    .final-cta h2 .muted { color: var(--gray-600); }
+
+    .final-cta p {
+      margin-top: 1.5rem;
+      font-size: 1.1rem;
+      color: var(--gray-400);
+      max-width: 450px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* ── PROMO ── */
+    .promo {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      justify-content: center;
+    }
+
+    .promo-card {
+      width: 100%;
+      max-width: 700px;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 28px;
+      padding: 3.5rem 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+    }
+
+    .promo-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    }
+
+    .promo-badge {
+      display: inline-block;
+      padding: 0.4rem 1.2rem;
+      background: var(--white);
+      color: var(--black);
+      border-radius: 100px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 2.5rem;
+    }
+
+    .promo-label {
+      font-size: 0.78rem;
+      color: var(--gray-500);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+    }
+
+    .promo-prices {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .promo-old, .promo-new {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .promo-old-label, .promo-new-label {
+      font-size: 0.72rem;
+      color: var(--gray-500);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 500;
+    }
+
+    .promo-old-value {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--gray-600);
+      text-decoration: line-through;
+      text-decoration-color: var(--gray-500);
+    }
+
+    .promo-new-value {
+      font-family: 'Outfit', sans-serif;
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .promo-new-value .currency,
+    .promo-old-value .currency {
+      font-size: 0.5em;
+      font-weight: 400;
+      color: var(--gray-500);
+      vertical-align: top;
+      margin-right: 0.05em;
+    }
+
+    .promo-new-value .period,
+    .promo-old-value .period {
+      font-size: 0.35em;
+      font-weight: 400;
+      color: var(--gray-500);
+    }
+
+    .promo-arrow {
+      font-size: 1.5rem;
+      color: var(--gray-600);
+      margin-top: 1rem;
+    }
+
+    .promo-savings {
+      font-size: 0.95rem;
+      color: #22c55e;
+      margin-bottom: 0.5rem;
+    }
+
+    .promo-savings strong { font-weight: 600; }
+
+    .promo-total {
+      font-size: 0.88rem;
+      color: var(--gray-400);
+      margin-bottom: 2.5rem;
+    }
+
+    .promo-total strong { color: var(--white); font-weight: 600; }
+
+    .promo-timer-section {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 2rem;
+    }
+
+    .promo-timer-label {
+      font-size: 0.72rem;
+      color: var(--gray-500);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+
+    .promo-timer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .timer-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .timer-value {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      min-width: 60px;
+      padding: 0.5rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+    }
+
+    .timer-unit {
+      font-size: 0.68rem;
+      color: var(--gray-500);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 500;
+    }
+
+    .timer-sep {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.5rem;
+      color: var(--gray-600);
+      margin-bottom: 1.2rem;
+    }
+
+    @media (max-width: 900px) {
+      .promo-card { padding: 2.5rem 1.5rem; }
+      .promo-prices { flex-direction: column; gap: 1rem; }
+      .promo-arrow { transform: rotate(90deg); }
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 3rem;
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--gray-600);
+    }
+
+    footer span { color: var(--gray-500); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 0.15; }
+    }
+
+    .fade-section {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.9s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .fade-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      section { padding: 5rem 1.5rem; }
+      .problem-grid, .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .pricing-anchor { grid-template-columns: 1fr; }
+      .calc-grid { grid-template-columns: 1fr; }
+      .calc-divider { display: none; }
+      .investment-breakdown { flex-direction: column; gap: 2rem; }
+      .investment-divider { width: 40px; height: 1px; margin: 0 auto; }
+      .investment-total { padding: 2.5rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PASSWORD GATE -->
+  <div id="password-gate" style="
+    position: fixed; inset: 0; z-index: 9999;
+    background: #000;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    gap: 1.5rem;
+  ">
+    <div style="
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: #fff;
+    ">Lucas Lopes <span style="color: #737373; font-weight: 300;">/ proposta</span></div>
+    <p style="color: #737373; font-size: 0.85rem; margin-top: -0.5rem;">Digite a senha para acessar a proposta</p>
+    <input id="password-input" type="password" placeholder="Senha" autofocus style="
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 0.9rem 1.4rem;
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      width: 280px;
+      outline: none;
+      text-align: center;
+      transition: border-color 0.3s;
+    ">
+    <p id="password-error" style="color: #ef4444; font-size: 0.8rem; opacity: 0; transition: opacity 0.3s;">Senha incorreta</p>
+  </div>
+
+  <script>
+    (function() {
+      var gate = document.getElementById('password-gate');
+      var input = document.getElementById('password-input');
+      var error = document.getElementById('password-error');
+      input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          if (input.value === 'actech26') {
+            gate.style.opacity = '0';
+            gate.style.transition = 'opacity 0.5s';
+            setTimeout(function() { gate.style.display = 'none'; }, 500);
+          } else {
+            error.style.opacity = '1';
+            input.style.borderColor = 'rgba(239,68,68,0.5)';
+            setTimeout(function() {
+              error.style.opacity = '0';
+              input.style.borderColor = 'rgba(255,255,255,0.12)';
+            }, 2000);
+          }
+        }
+      });
+      input.addEventListener('focus', function() {
+        input.style.borderColor = 'rgba(255,255,255,0.3)';
+      });
+      input.addEventListener('blur', function() {
+        input.style.borderColor = 'rgba(255,255,255,0.12)';
+      });
+    })();
+  </script>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">Lucas Lopes <span>/ proposta</span></div>
+    <ul class="nav-links">
+      <li><a href="#entregaveis">Entregaveis</a></li>
+      <li><a href="#roadmap">Roadmap</a></li>
+      <li><a href="#investimento">Investimento</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Proposta — ACTECH
+    </div>
+    <h1>Desenvolvimento<br><span class="thin">de I.A.</span></h1>
+    <p class="hero-sub">
+      Desenvolvimento sob medida de solucoes com <strong>inteligencia artificial</strong> para os processos da ACTECH — automacoes, integracoes e sistemas inteligentes.
+    </p>
+    <div class="scroll-indicator">
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- DELIVERABLES -->
+  <section class="deliverables fade-section" id="entregaveis">
+    <p class="section-label">O que voce recebe</p>
+    <h2 class="section-title">Entregaveis<br><span class="muted">do projeto.</span></h2>
+    <div class="deliverables-list">
+      <div class="deliverable-row">
+        <div class="deliverable-number">01</div>
+        <div class="deliverable-info">
+          <h3>10h Mensais de Desenvolvimento I.A.</h3>
+          <p>Horas dedicadas de desenvolvedor para criar, implementar e manter solucoes de inteligencia artificial personalizadas para a operacao da ACTECH.</p>
+        </div>
+      </div>
+      <div class="deliverable-row">
+        <div class="deliverable-number">02</div>
+        <div class="deliverable-info">
+          <h3>Automacoes de Processos com I.A.</h3>
+          <p>Desenvolvimento de automacoes inteligentes para otimizar fluxos operacionais — desde analise de dados de producao ate geracoes de relatorios automaticos.</p>
+        </div>
+      </div>
+      <div class="deliverable-row">
+        <div class="deliverable-number">03</div>
+        <div class="deliverable-info">
+          <h3>Integracoes com Sistemas Existentes</h3>
+          <p>Conexao das solucoes de I.A. com os sistemas e ferramentas ja utilizados pela ACTECH, garantindo fluxo continuo de dados e operacoes.</p>
+        </div>
+      </div>
+      <div class="deliverable-row">
+        <div class="deliverable-number">04</div>
+        <div class="deliverable-info">
+          <h3>Grupo do WhatsApp VIP para Suporte</h3>
+          <p>Canal exclusivo e direto para acompanhamento do desenvolvimento, tirar duvidas tecnicas e alinhar prioridades em tempo real.</p>
+        </div>
+      </div>
+      <div class="deliverable-row">
+        <div class="deliverable-number">05</div>
+        <div class="deliverable-info">
+          <h3>Relatorios de Progresso & Documentacao</h3>
+          <p>Entregas documentadas com relatorios mensais de progresso, codigo versionado e documentacao tecnica de todas as solucoes desenvolvidas.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section class="roadmap fade-section" id="roadmap">
+    <p class="section-label">O plano</p>
+    <h2 class="section-title">3 meses de<br><span class="muted">desenvolvimento.</span></h2>
+    <div class="roadmap-container">
+      <div class="roadmap-line"></div>
+
+      <div class="roadmap-item">
+        <div class="roadmap-marker">
+          <div class="roadmap-dot"></div>
+          <span class="roadmap-month">Mes 1</span>
+        </div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Fase 01 — Diagnostico & Setup</div>
+          <h3>Imersao, Arquitetura & Primeiros MVPs</h3>
+          <p>Levantamento dos processos da ACTECH, definicao da arquitetura tecnica e desenvolvimento dos primeiros MVPs funcionais com resultados rapidos.</p>
+          <div class="roadmap-tags">
+            <span class="roadmap-tag">Mapeamento de processos</span>
+            <span class="roadmap-tag">Arquitetura tecnica</span>
+            <span class="roadmap-tag">Primeiros MVPs</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="roadmap-item">
+        <div class="roadmap-marker">
+          <div class="roadmap-dot"></div>
+          <span class="roadmap-month">Mes 2</span>
+        </div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Fase 02 — Desenvolvimento Core</div>
+          <h3>Automacoes & Integracoes</h3>
+          <p>Desenvolvimento das solucoes priorizadas, integracoes com sistemas existentes e refinamento baseado em feedback e dados reais de uso.</p>
+          <div class="roadmap-tags">
+            <span class="roadmap-tag">Automacoes ativas</span>
+            <span class="roadmap-tag">Integracoes</span>
+            <span class="roadmap-tag">Otimizacoes</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="roadmap-item">
+        <div class="roadmap-marker">
+          <div class="roadmap-dot"></div>
+          <span class="roadmap-month">Mes 3</span>
+        </div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Fase 03 — Consolidacao</div>
+          <h3>Entrega Final & Documentacao</h3>
+          <p>Finalizacao de todas as solucoes, testes finais, documentacao completa e entrega do projeto com suporte para transicao.</p>
+          <div class="roadmap-tags">
+            <span class="roadmap-tag">Documentacao completa</span>
+            <span class="roadmap-tag">Testes finalizados</span>
+            <span class="roadmap-tag">Handoff tecnico</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing fade-section" id="investimento">
+    <p class="section-label">Investimento</p>
+    <h2 class="section-title">Quanto custa <span class="muted">nao</span><br>ter I.A. na operacao?</h2>
+
+    <!-- Calculator -->
+    <div class="calculator">
+      <div class="calc-header">
+        <h3>Calculadora de ROI</h3>
+        <p>Simule o retorno do investimento para a ACTECH</p>
+      </div>
+      <div class="calc-grid">
+        <div class="calc-inputs">
+          <label>Colaboradores impactados</label>
+          <input type="number" id="calc-people" value="5" min="1" max="100">
+
+          <label>Horas economizadas por pessoa/semana</label>
+          <input type="number" id="calc-hours" value="8" min="1" max="40">
+
+          <label>Custo medio hora/colaborador (R$)</label>
+          <input type="number" id="calc-rate" value="45" min="10" max="500">
+
+          <label>Custo hora desenvolvedor (R$)</label>
+          <input type="number" id="calc-dev" value="600" min="100" max="2000">
+        </div>
+        <div class="calc-divider"></div>
+        <div class="calc-result">
+          <div class="calc-result-item">
+            <div class="calc-result-label">Economia mensal estimada</div>
+            <div class="calc-result-value" id="calc-monthly">R$ 13.200</div>
+            <div class="calc-result-note" id="calc-monthly-note">R$ 7.200 em produtividade + R$ 6.000 em dev (10h x R$ 600/h)</div>
+          </div>
+          <div class="calc-result-item">
+            <div class="calc-result-label">Economia em 3 meses</div>
+            <div class="calc-result-value" id="calc-total">R$ 79.200</div>
+          </div>
+          <div class="calc-result-item">
+            <div class="calc-result-label">Retorno sobre investimento</div>
+            <div class="calc-result-value highlight" id="calc-roi">+120%</div>
+            <div class="calc-result-note" id="calc-roi-note">Economia de R$ 79.200 vs investimento de R$ 36.000</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Price Anchoring -->
+    <div class="pricing-anchor">
+      <div class="anchor-card comparison">
+        <div class="anchor-label">Contratar dev I.A. senior</div>
+        <div class="anchor-price"><span class="currency">R$</span>22k</div>
+        <div class="anchor-period">por mes / CLT + beneficios</div>
+        <div class="anchor-desc">Salario medio de um desenvolvedor senior especializado em I.A. no mercado — sem garantia de disponibilidade imediata.</div>
+      </div>
+
+      <div class="anchor-card comparison">
+        <div class="anchor-label">Software house</div>
+        <div class="anchor-price"><span class="currency">R$</span>120k</div>
+        <div class="anchor-period">projeto fechado</div>
+        <div class="anchor-desc">Empresas de desenvolvimento cobram de R$120k a R$250k por projetos de I.A. similares — com prazos longos e pouca flexibilidade.</div>
+      </div>
+
+      <div class="anchor-card featured">
+        <div class="featured-badge">Esta proposta</div>
+        <div class="anchor-label">Desenvolvimento dedicado</div>
+        <div class="anchor-price"><span class="currency">R$</span>6k</div>
+        <div class="anchor-period">por mes / 3 meses</div>
+        <div class="anchor-desc">10h mensais de desenvolvedor dedicado, com entregas continuas e suporte direto. Resultado real, nao promessa.</div>
+      </div>
+    </div>
+
+    <!-- Investment Summary -->
+    <div class="investment">
+      <div class="investment-total">
+        <div class="investment-breakdown">
+          <div class="investment-item">
+            <div class="label">Mensal</div>
+            <div class="value"><span class="small">R$</span> 6.000</div>
+          </div>
+          <div class="investment-divider"></div>
+          <div class="investment-item">
+            <div class="label">Total do projeto</div>
+            <div class="value"><span class="small">R$</span> 18.000</div>
+          </div>
+          <div class="investment-divider"></div>
+          <div class="investment-item">
+            <div class="label">Duracao</div>
+            <div class="value">3 <span class="small">meses</span></div>
+          </div>
+          <div class="investment-divider"></div>
+          <div class="investment-item">
+            <div class="label">Horas/mes</div>
+            <div class="value">10 <span class="small">horas</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about fade-section" id="sobre">
+    <p class="section-label">Quem vai desenvolver</p>
+    <h2 class="section-title">Desenvolvimento dedicado<br><span class="muted">do inicio ao fim.</span></h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>
+          Este projeto sera desenvolvido diretamente por <strong>Lucas Lopes</strong>,
+          com foco total nas necessidades da ACTECH.
+          Nada de intermediarios ou equipes rotativas.
+        </p>
+        <br>
+        <p>
+          Cada solucao, cada automacao e cada integracao sera
+          <strong>desenvolvida sob medida para os processos reais</strong> da ACTECH —
+          com acompanhamento proximo e canal direto de comunicacao.
+        </p>
+      </div>
+      <div class="about-highlights">
+        <div class="about-highlight">
+          <h4>Desenvolvimento Sob Medida</h4>
+          <p>Solucoes construidas especificamente para a realidade da ACTECH. Nada generico, tudo customizado.</p>
+        </div>
+        <div class="about-highlight">
+          <h4>Entregas Continuas</h4>
+          <p>Resultados visiveis desde o primeiro mes. Desenvolvimento agil com entregas incrementais.</p>
+        </div>
+        <div class="about-highlight">
+          <h4>Suporte Direto</h4>
+          <p>Canal aberto para alinhamentos e ajustes durante todo o projeto. Resposta em ate 24h.</p>
+        </div>
+        <div class="about-highlight">
+          <h4>Codigo & Documentacao</h4>
+          <p>Todo o codigo entregue, versionado e documentado. A ACTECH e dona de tudo que for desenvolvido.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROMO -->
+  <section class="promo fade-section" id="promo">
+    <div class="promo-card">
+      <div class="promo-badge">Oferta por tempo limitado</div>
+      <div class="promo-content">
+        <p class="promo-label">Valor especial por tempo limitado</p>
+        <div class="promo-prices">
+          <div class="promo-old">
+            <span class="promo-old-label">De</span>
+            <span class="promo-old-value"><span class="currency">R$</span> 6.000<span class="period">/mes</span></span>
+          </div>
+          <div class="promo-arrow">→</div>
+          <div class="promo-new">
+            <span class="promo-new-label">Por</span>
+            <span class="promo-new-value"><span class="currency">R$</span> 4.500<span class="period">/mes</span></span>
+          </div>
+        </div>
+        <div class="promo-savings">Economia de <strong>R$ 4.500</strong> no projeto completo</div>
+        <div class="promo-total">Total: <strong>R$ 13.500</strong> em 3x de R$ 4.500</div>
+        <div class="promo-timer-section">
+          <p class="promo-timer-label">Esta oferta expira em</p>
+          <div class="promo-timer" id="promo-timer">
+            <div class="timer-block">
+              <span class="timer-value" id="timer-days">3</span>
+              <span class="timer-unit">dias</span>
+            </div>
+            <div class="timer-sep">:</div>
+            <div class="timer-block">
+              <span class="timer-value" id="timer-hours">00</span>
+              <span class="timer-unit">horas</span>
+            </div>
+            <div class="timer-sep">:</div>
+            <div class="timer-block">
+              <span class="timer-value" id="timer-minutes">00</span>
+              <span class="timer-unit">min</span>
+            </div>
+            <div class="timer-sep">:</div>
+            <div class="timer-block">
+              <span class="timer-value" id="timer-seconds">00</span>
+              <span class="timer-unit">seg</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final-cta">
+    <h2>Pronto para<br><span class="muted">comecar?</span></h2>
+    <p>A I.A. ja esta transformando a industria. Quanto antes a ACTECH comecar, antes colhe os resultados.</p>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>Proposta confidencial preparada para <span>ACTECH</span> — Abril 2026</p>
+  </footer>
+
+  <script>
+    // ── Scroll animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.fade-section, .roadmap-item').forEach(el => observer.observe(el));
+
+    // ── Nav scroll effect
+    window.addEventListener('scroll', () => {
+      document.querySelector('nav').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // ── Calculator
+    function formatCurrency(value) {
+      return 'R$ ' + value.toLocaleString('pt-BR');
+    }
+
+    function updateCalculator() {
+      const people = parseInt(document.getElementById('calc-people').value) || 0;
+      const hours = parseInt(document.getElementById('calc-hours').value) || 0;
+      const rate = parseInt(document.getElementById('calc-rate').value) || 0;
+      const devRate = parseInt(document.getElementById('calc-dev').value) || 0;
+
+      const devHours = 10;
+      const devMonthlyCost = devHours * devRate;
+      const productivitySavings = people * hours * 4 * rate;
+      const monthlySavings = productivitySavings + devMonthlyCost;
+      const totalSavings = monthlySavings * 3;
+      const investment = 18000;
+      const roi = ((totalSavings - investment) / investment * 100).toFixed(0);
+
+      document.getElementById('calc-monthly').textContent = formatCurrency(monthlySavings);
+      document.getElementById('calc-monthly-note').textContent =
+        `${formatCurrency(productivitySavings)} em produtividade + ${formatCurrency(devMonthlyCost)} em dev (${devHours}h x ${formatCurrency(devRate)}/h)`;
+      document.getElementById('calc-total').textContent = formatCurrency(totalSavings);
+      document.getElementById('calc-roi').textContent = (roi > 0 ? '+' : '') + roi + '%';
+      document.getElementById('calc-roi-note').textContent =
+        `Economia de ${formatCurrency(totalSavings)} vs investimento de ${formatCurrency(investment)}`;
+    }
+
+    document.querySelectorAll('.calc-inputs input').forEach(input => {
+      input.addEventListener('input', updateCalculator);
+    });
+
+    // ── Initial calculation
+    updateCalculator();
+
+    // ── Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    // ── Staggered roadmap animation
+    const roadmapObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 150);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll('.roadmap-item').forEach(item => roadmapObserver.observe(item));
+
+    // ── Promo countdown (3 days from first visit)
+    (function() {
+      var storageKey = 'actech_promo_end';
+      var endTime = localStorage.getItem(storageKey);
+      if (!endTime) {
+        endTime = Date.now() + 3 * 24 * 60 * 60 * 1000;
+        localStorage.setItem(storageKey, endTime);
+      }
+      endTime = parseInt(endTime);
+
+      function pad(n) { return n < 10 ? '0' + n : n; }
+
+      function tick() {
+        var now = Date.now();
+        var diff = Math.max(0, endTime - now);
+        var d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        var h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        var s = Math.floor((diff % (1000 * 60)) / 1000);
+        document.getElementById('timer-days').textContent = pad(d);
+        document.getElementById('timer-hours').textContent = pad(h);
+        document.getElementById('timer-minutes').textContent = pad(m);
+        document.getElementById('timer-seconds').textContent = pad(s);
+        if (diff > 0) requestAnimationFrame(tick);
+      }
+      tick();
+      setInterval(tick, 1000);
+    })();
+  </script>
+
+</body>
+</html>
